@@ -12,6 +12,7 @@ const API_KEY = process.env.NANOBANANA_API_KEY;
 
 if (!API_KEY) {
   console.error("❌ NANOBANANA_API_KEY missing");
+  process.exit(1);
 }
 
 // health check
@@ -23,11 +24,13 @@ app.get("/", (req, res) => {
   });
 });
 
-// example api route
+// nanobanana route
 app.get("/nanobanana", async (req, res) => {
   try {
     const { q } = req.query;
-    if (!q) return res.status(400).json({ error: "query missing" });
+    if (!q) {
+      return res.status(400).json({ error: "query missing" });
+    }
 
     const response = await axios.get(
       "https://nx-nanobanana-api.com/search",
@@ -43,11 +46,11 @@ app.get("/nanobanana", async (req, res) => {
   } catch (err) {
     res.status(500).json({
       error: "API failed",
-      message: err.message
+      message: err.response?.data || err.message
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log("🚀 Server running on port", PORT);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
