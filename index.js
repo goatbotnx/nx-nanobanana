@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
@@ -7,13 +6,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.NANOBANANA_API_KEY;
+const PORT = 3000;
 
-if (!API_KEY) {
-  console.error("❌ NANOBANANA_API_KEY missing");
-  process.exit(1);
-}
+// ❌ dotenv বাদ
+// ✅ API key সরাসরি set
+const API_KEY = "AIzaSyA3qvd_Jg9-CQ4mIMpwEKbzlQ9C-fCeiBs";
 
 // health check
 app.get("/", (req, res) => {
